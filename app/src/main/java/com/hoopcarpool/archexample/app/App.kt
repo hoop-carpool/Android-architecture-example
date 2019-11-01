@@ -1,9 +1,9 @@
-package com.hoopcarpool.hooparchexample.app
+package com.hoopcarpool.archexample.app
 
 import android.app.Application
 import androidx.lifecycle.ViewModelProvider
 import com.facebook.stetho.Stetho
-import com.hoopcarpool.hooparchexample.BuildConfig
+import com.hoopcarpool.archexample.BuildConfig
 import java.io.Closeable
 import kotlin.properties.Delegates
 import mini.*

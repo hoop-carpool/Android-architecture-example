@@ -1,15 +1,13 @@
-package com.hoopcarpool.hooparchexample.features
+package com.hoopcarpool.archexample.features
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
-import com.hoopcarpool.hooparchexample.R
-import com.hoopcarpool.hooparchexample.databinding.MainActivityBinding
+import com.hoopcarpool.archexample.R
+import com.hoopcarpool.archexample.databinding.MainActivityBinding
 
 class MainActivity : AppCompatActivity() {
 

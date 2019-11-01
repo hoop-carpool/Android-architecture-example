@@ -1,4 +1,4 @@
-package com.hoopcarpool.hooparchexample
+package com.hoopcarpool.archexample
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

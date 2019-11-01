@@ -1,4 +1,4 @@
-package com.hoopcarpool.hooparchexample.core.base
+package com.hoopcarpool.archexample.core.base
 
 import androidx.fragment.app.Fragment
 import org.kodein.di.Kodein

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.hoopcarpool.hooparchexample.features.login.LoginFragment"
+        android:name="com.hoopcarpool.archexample.features.login.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/login_fragment"/>
 
