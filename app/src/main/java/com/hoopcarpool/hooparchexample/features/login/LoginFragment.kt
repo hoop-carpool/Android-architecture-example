@@ -11,9 +11,14 @@ class LoginFragment : BaseFragment() {
 
     private val loginViewModel: LoginViewModel by viewModel()
 
+    private lateinit var binding: LoginFragmentBinding
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) = LoginFragmentBinding.inflate(inflater, container, false).root
+    ) =
+        LoginFragmentBinding
+            .inflate(inflater, container, false)
+            .also { binding = it }.root
 }
