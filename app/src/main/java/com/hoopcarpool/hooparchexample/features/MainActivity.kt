@@ -1,7 +1,8 @@
-package com.hoopcarpool.hooparchexample
+package com.hoopcarpool.hooparchexample.features
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.hoopcarpool.hooparchexample.R
 
 class MainActivity : AppCompatActivity() {
 
