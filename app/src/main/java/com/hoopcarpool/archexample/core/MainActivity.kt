@@ -1,4 +1,4 @@
-package com.hoopcarpool.archexample.features
+package com.hoopcarpool.archexample.core
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

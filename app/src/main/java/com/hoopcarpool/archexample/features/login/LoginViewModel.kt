@@ -1,6 +1,16 @@
 package com.hoopcarpool.archexample.features.login
 
-import android.app.Application
-import mini.rx.android.viewmodels.RxAndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.hoopcarpool.archexample.core.base.BaseViewModel
+import okhttp3.OkHttpClient
+import timber.log.Timber
 
-class LoginViewModel(application: Application) : RxAndroidViewModel(application)
+class LoginViewModel : BaseViewModel() {
+
+    private val _viewData = MutableLiveData<LoginViewData>()
+    val viewData: LiveData<LoginViewData>
+        get() = _viewData
+
+    class LoginViewData
+}

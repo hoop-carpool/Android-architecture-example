@@ -5,11 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.hoopcarpool.archexample.core.base.BaseFragment
 import com.hoopcarpool.archexample.databinding.LoginFragmentBinding
-import mini.kodein.android.viewModel
 
 class LoginFragment : BaseFragment() {
 
-    private val loginViewModel: LoginViewModel by viewModel()
+    private val viewModel: LoginViewModel by viewModel()
 
     private lateinit var binding: LoginFragmentBinding
 
@@ -21,4 +20,5 @@ class LoginFragment : BaseFragment() {
         LoginFragmentBinding
             .inflate(inflater, container, false)
             .also { binding = it }.root
+    
 }
