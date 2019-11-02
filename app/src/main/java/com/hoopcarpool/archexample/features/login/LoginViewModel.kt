@@ -1,10 +1,9 @@
 package com.hoopcarpool.archexample.features.login
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.hoopcarpool.archexample.core.base.BaseViewModel
-import okhttp3.OkHttpClient
-import timber.log.Timber
 
 class LoginViewModel : BaseViewModel() {
 
@@ -12,5 +11,10 @@ class LoginViewModel : BaseViewModel() {
     val viewData: LiveData<LoginViewData>
         get() = _viewData
 
-    class LoginViewData
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+    fun postValue(viewData: LoginViewData) {
+        _viewData.postValue(viewData)
+    }
+
+    data class LoginViewData(val text: String)
 }
