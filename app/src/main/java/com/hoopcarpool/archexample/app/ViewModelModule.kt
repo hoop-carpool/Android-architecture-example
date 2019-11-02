@@ -4,6 +4,7 @@ import com.hoopcarpool.archexample.core.base.BaseViewModel
 import com.hoopcarpool.archexample.features.login.LoginViewModel
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
+import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 
 /**
@@ -11,7 +12,7 @@ import org.kodein.di.generic.provider
  */
 object ViewModelModule {
     fun create() = Kodein.Module("viewmodel", true) {
-        bindViewModel<LoginViewModel>() with provider { LoginViewModel() }
+        bindViewModel<LoginViewModel>() with provider { LoginViewModel(instance()) }
     }
 
     private inline fun <reified T : BaseViewModel> Kodein.Builder.bindViewModel(overrides: Boolean? = null): Kodein.Builder.TypeBinder<T> {
