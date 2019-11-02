@@ -1,12 +1,12 @@
 package com.hoopcarpool.archexample.app
 
 import com.hoopcarpool.archexample.BuildConfig
+import com.hoopcarpool.archexample.core.network.CustomHttpLoggerInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.util.concurrent.TimeUnit
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
@@ -22,11 +22,13 @@ object NetworkModule {
     fun create() = Kodein.Module("network", true) {
         bind<OkHttpClient>() with singleton {
             val client = getOkHttpBuilder(60)
-            val interceptor = HttpLoggingInterceptor { message -> Timber.tag("OkHttpClient").d(message) }
-                .setLevel(if (BuildConfig.DEBUG)
-                    HttpLoggingInterceptor.Level.BODY
-                else
-                    HttpLoggingInterceptor.Level.NONE)
+            val interceptor = CustomHttpLoggerInterceptor { message -> Timber.tag("OkHttpClient").d(message) }
+                .setLevel(
+                    if (BuildConfig.DEBUG)
+                        CustomHttpLoggerInterceptor.Level.BODY
+                    else
+                        CustomHttpLoggerInterceptor.Level.NONE
+                )
             client.addNetworkInterceptor(interceptor)
 
             client.build()

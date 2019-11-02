@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.observe
 import com.hoopcarpool.archexample.core.base.BaseFragment
+import com.hoopcarpool.archexample.core.utils.Resource
 import com.hoopcarpool.archexample.databinding.LoginFragmentBinding
 
 class LoginFragment : BaseFragment() {
@@ -18,10 +19,10 @@ class LoginFragment : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) =
-        LoginFragmentBinding
-            .inflate(inflater, container, false)
-            .also { binding = it }.root
+    ) = LoginFragmentBinding
+        .inflate(inflater, container, false)
+        .also { binding = it }
+        .root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,19 +32,20 @@ class LoginFragment : BaseFragment() {
         }
 
         viewModel.viewData.observe(this) {
-            when {
-                it.isFailure -> {
+            when (it) {
+                is Resource.Success -> {
+                    binding.text.text = it.value.text
                     binding.loading.visibility = View.GONE
                 }
-                it.isSuccess -> {
-                    binding.text.text = it.getOrNull()?.text
+                is Resource.Empty -> {
                     binding.loading.visibility = View.GONE
                 }
-                it.isLoading -> {
+                is Resource.Loading -> {
                     binding.loading.visibility = View.VISIBLE
                 }
-                it.isEmpty -> {
+                is Resource.Failure -> {
                     binding.loading.visibility = View.GONE
+                    binding.text.text = it.exception.toString()
                 }
             }
         }

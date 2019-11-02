@@ -22,14 +22,14 @@ interface LoginApi {
         @Field("grant_type") grantType: String = "client_credentials",
         @Field("scope") scope: String = "verse chapter"
     ): Response<Auth>
-}
 
-@JsonClass(generateAdapter = true)
-data class Auth(
-    @Json(name = "access_token")
-    val accessToken: String,
-    @Json(name = "scope")
-    val scope: String,
-    @Json(name = "token_type")
-    val tokenType: String
-)
+    @JsonClass(generateAdapter = true)
+    data class Auth(
+        @Json(name = "access_token")
+        val accessToken: String,
+        @Json(name = "scope")
+        val scope: String,
+        @Json(name = "token_type")
+        val tokenType: String
+    )
+}

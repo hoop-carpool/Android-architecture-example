@@ -4,10 +4,10 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.hoopcarpool.archexample.core.base.BaseViewModel
+import com.hoopcarpool.archexample.core.utils.Resource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import mini.Resource
 
 class LoginViewModel(private val loginController: LoginController) : BaseViewModel() {
 
@@ -21,12 +21,12 @@ class LoginViewModel(private val loginController: LoginController) : BaseViewMod
     }
 
     init {
-        _viewData.postValue(Resource.empty())
+        _viewData.postValue(Resource.Empty())
     }
 
     fun doLogin() {
         CoroutineScope(Dispatchers.IO).launch {
-            _viewData.postValue(Resource.loading())
+            _viewData.postValue(Resource.Loading())
             val oauth = loginController.doLogin()
             _viewData.postValue(LoginViewData.from(oauth))
         }
@@ -35,12 +35,12 @@ class LoginViewModel(private val loginController: LoginController) : BaseViewMod
     data class LoginViewData(val text: String) {
 
         companion object {
-            fun from(oauthResource: Resource<Auth>): Resource<LoginViewData> {
-                return when {
-                    oauthResource.isLoading -> Resource.loading()
-                    oauthResource.isSuccess -> Resource.success(LoginViewData(oauthResource.getOrNull()!!.accessToken))
-                    oauthResource.isFailure -> Resource.failure(oauthResource.exceptionOrNull())
-                    else -> Resource.empty()
+            fun from(oauthResource: Resource<LoginApi.Auth>): Resource<LoginViewData> {
+                return when (oauthResource) {
+                    is Resource.Success -> Resource.Success(LoginViewData(oauthResource.value.accessToken))
+                    is Resource.Empty -> Resource.Empty()
+                    is Resource.Loading -> Resource.Loading()
+                    is Resource.Failure -> Resource.Failure(oauthResource.exception)
                 }
             }
         }
