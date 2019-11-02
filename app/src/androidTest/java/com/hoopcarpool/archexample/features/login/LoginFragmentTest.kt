@@ -5,25 +5,36 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.agoda.kakao.progress.KProgressBar
 import com.agoda.kakao.screen.Screen
 import com.agoda.kakao.text.KTextView
 import com.hoopcarpool.archexample.R
+import com.hoopcarpool.archexample.utils.injectTestDependencies
+import com.nhaarman.mockitokotlin2.mock
+import mini.Resource
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
+import org.kodein.di.generic.bind
+import org.kodein.di.generic.singleton
 
 private class LoginScreen : Screen<LoginScreen>() {
-    val name = KTextView { withId(R.id.text) }
+    val text = KTextView { withId(R.id.text) }
+    val loading = KProgressBar { withId(R.id.loading) }
 }
 
 @RunWith(AndroidJUnit4::class)
 internal class LoginFragmentTest {
 
-    private val mockNavController = Mockito.mock(NavController::class.java)
+    private val mockNavController: NavController = mock()
     private lateinit var fragmentScenario: FragmentScenario<LoginFragment>
 
     private fun launchNewInstance() {
+        injectTestDependencies {
+            bind<LoginViewModel>() with singleton {
+                mock<LoginViewModel>()
+            }
+        }
         fragmentScenario = launchFragmentInContainer(null, R.style.AppTheme) { LoginFragment() }
         fragmentScenario.onFragment { fragment -> Navigation.setViewNavController(fragment.requireView(), mockNavController) }
     }
@@ -34,16 +45,39 @@ internal class LoginFragmentTest {
     }
 
     @Test
-    fun test_test() {
+    fun fragment_show_success_token() {
 
-        val viewData = LoginViewModel.LoginViewData("This is a test")
+        val viewData = LoginViewModel.LoginViewData("token token")
 
         fragmentScenario.onFragment {
-            it.viewModel.postValue(viewData)
+            it.viewModel.postValue(Resource.success(viewData))
         }
 
         Screen.onScreen<LoginScreen> {
-            name.hasText(viewData.text)
+            text.hasText(viewData.text)
+            loading.isNotDisplayed()
+        }
+    }
+
+    @Test
+    fun fragment_show_loading() {
+
+        fragmentScenario.onFragment {
+            it.viewModel.postValue(Resource.loading())
+        }
+
+        Screen.onScreen<LoginScreen> {
+            loading.isDisplayed()
+        }
+    }
+
+    @Test
+    fun fragment_click_calls() {
+
+        Screen.onScreen<LoginScreen> {
+            loading.isNotDisplayed()
+            text.click()
+            loading.isDisplayed()
         }
     }
 }
