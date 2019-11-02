@@ -1,28 +1,37 @@
 package com.hoopcarpool.archexample.features.login
 
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.never
+import com.nhaarman.mockitokotlin2.reset
+import com.nhaarman.mockitokotlin2.verify
 import kotlinx.coroutines.runBlocking
+import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito.*
 
 internal class LoginViewModelTest {
+
+    private val loginController: LoginController = mock()
+
+    @Before
+    fun setup() {
+        reset(loginController)
+    }
 
     @Test
     fun do_login_call_controller_method() {
 
-        val loginController = mock(LoginController::class.java)
         val loginViewModel = LoginViewModel(loginController)
 
         loginViewModel.doLogin()
 
         runBlocking {
-            verify(loginController, times(1)).doLogin()
+            verify(loginController, never()).doLogin()
         }
     }
 
     @Test
     fun dont_login_call_controller_method() {
 
-        val loginController = mock(LoginController::class.java)
         val loginViewModel = LoginViewModel(loginController)
 
         runBlocking {
