@@ -207,8 +207,6 @@ public final class CustomHttpLoggerInterceptor implements Interceptor {
                charset = contentType.charset(UTF8);
             }
 
-            msgToLog = msgToLog + "\n";
-
             if (isPlaintext(buffer)) {
                msgToLog = msgToLog + buffer.readString(charset) + "\n";
                msgToLog = msgToLog + "--> END " + request.method() + " (" + requestBody.contentLength() + "-byte body)" + "\n";
@@ -274,7 +272,6 @@ public final class CustomHttpLoggerInterceptor implements Interceptor {
             }
 
             if (!isPlaintext(buffer)) {
-               msgToLog = msgToLog + "\n";
                msgToLog = msgToLog + "<-- END HTTP (binary " + buffer.size() + "-byte body omitted)" + "\n";
                logger.log(msgToLog);
 
@@ -282,7 +279,6 @@ public final class CustomHttpLoggerInterceptor implements Interceptor {
             }
 
             if (contentLength != 0) {
-               msgToLog = msgToLog + "\n";
                msgToLog = msgToLog + buffer.clone().readString(charset) + "\n";
             }
 

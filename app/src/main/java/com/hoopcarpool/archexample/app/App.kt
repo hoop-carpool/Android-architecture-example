@@ -4,10 +4,14 @@ import android.app.Application
 import androidx.annotation.RestrictTo
 import com.facebook.stetho.Stetho
 import com.hoopcarpool.archexample.BuildConfig
+import com.hoopcarpool.archexample.core.network.ApiModule
 import com.hoopcarpool.archexample.features.login.LoginModule
 import java.io.Closeable
 import kotlin.properties.Delegates
-import mini.*
+import mini.Dispatcher
+import mini.LoggerInterceptor
+import mini.MiniGen
+import mini.Store
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.conf.ConfigurableKodein
@@ -60,7 +64,8 @@ class App : Application(), KodeinAware {
             addImport(AppModule.create(), false)
             addImport(LoginModule.create(), false)
             addImport(NetworkModule.create(), false)
-
+            addImport(FluxModule.create(), false)
+            addImport(ApiModule.create(), false)
             if (testModule != null)
                 addImport(testModule!!, true)
         }
@@ -93,13 +98,5 @@ class App : Application(), KodeinAware {
     @RestrictTo(RestrictTo.Scope.TESTS)
     fun clearTestModule() {
         testModule = null
-    }
-}
-
-class FakeAction : BaseAction()
-class FakeStore : Store<String>() {
-    @Reducer
-    fun fakeAction(action: FakeAction) {
-        newState = ""
     }
 }

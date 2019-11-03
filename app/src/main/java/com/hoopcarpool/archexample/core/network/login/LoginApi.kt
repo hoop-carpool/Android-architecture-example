@@ -1,4 +1,4 @@
-package com.hoopcarpool.archexample.features.login
+package com.hoopcarpool.archexample.core.network.login
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

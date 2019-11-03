@@ -24,10 +24,4 @@ class MainActivity : AppCompatActivity() {
     /** Returns Activity's nav controller */
     protected val navController: NavController
         get() = findNavController(R.id.nav_host_fragment)
-
-    override fun onResume() {
-        super.onResume()
-
-        navController.navigate(R.id.loginFragment)
-    }
 }

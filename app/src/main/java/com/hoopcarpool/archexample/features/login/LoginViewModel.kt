@@ -4,12 +4,20 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.hoopcarpool.archexample.core.base.BaseViewModel
+import com.hoopcarpool.archexample.core.flux.SessionStore
+import com.hoopcarpool.archexample.core.network.login.LoginApi
+import com.hoopcarpool.archexample.core.network.login.LoginRepository
 import com.hoopcarpool.archexample.core.utils.Resource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import mini.rx.flowable
+import mini.rx.select
 
-class LoginViewModel(private val loginController: LoginController) : BaseViewModel() {
+class LoginViewModel(
+    private val loginRepository: LoginRepository,
+    private val sessionStore: SessionStore
+) : BaseViewModel() {
 
     private val _viewData = MutableLiveData<Resource<LoginViewData>>()
     val viewData: LiveData<Resource<LoginViewData>>
@@ -22,12 +30,18 @@ class LoginViewModel(private val loginController: LoginController) : BaseViewMod
 
     init {
         _viewData.postValue(Resource.Empty())
+
+        sessionStore.flowable()
+            .select { it.token }
+            .subscribe {
+                _viewData.postValue(Resource.Success(LoginViewData(it.accessToken)))
+            }.track()
     }
 
     fun doLogin() {
         CoroutineScope(Dispatchers.IO).launch {
             _viewData.postValue(Resource.Loading())
-            val oauth = loginController.doLogin()
+            val oauth = loginRepository.doLogin()
             _viewData.postValue(LoginViewData.from(oauth))
         }
     }
