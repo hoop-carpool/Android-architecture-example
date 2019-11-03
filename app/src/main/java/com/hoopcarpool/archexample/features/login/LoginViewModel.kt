@@ -10,6 +10,7 @@ import com.hoopcarpool.archexample.core.network.login.LoginRepository
 import com.hoopcarpool.archexample.core.utils.Resource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import mini.rx.flowable
 import mini.rx.select
@@ -38,9 +39,9 @@ class LoginViewModel(
             }.track()
     }
 
-    fun doLogin() {
-        CoroutineScope(Dispatchers.IO).launch {
-            _viewData.postValue(Resource.Loading())
+    fun doLogin(): Job {
+        _viewData.postValue(Resource.Loading())
+        return CoroutineScope(Dispatchers.IO).launch {
             val oauth = loginRepository.doLogin()
             _viewData.postValue(LoginViewData.from(oauth))
         }

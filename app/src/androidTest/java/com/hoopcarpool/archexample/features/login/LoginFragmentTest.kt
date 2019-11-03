@@ -9,9 +9,9 @@ import com.agoda.kakao.progress.KProgressBar
 import com.agoda.kakao.screen.Screen
 import com.agoda.kakao.text.KTextView
 import com.hoopcarpool.archexample.R
+import com.hoopcarpool.archexample.core.utils.Resource
 import com.hoopcarpool.archexample.utils.injectTestDependencies
 import com.nhaarman.mockitokotlin2.mock
-import mini.Resource
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -50,7 +50,7 @@ internal class LoginFragmentTest {
         val viewData = LoginViewModel.LoginViewData("token token")
 
         fragmentScenario.onFragment {
-            it.viewModel.postValue(Resource.success(viewData))
+            it.viewModel.postValue(Resource.Success(viewData))
         }
 
         Screen.onScreen<LoginScreen> {
@@ -63,7 +63,7 @@ internal class LoginFragmentTest {
     fun fragment_show_loading() {
 
         fragmentScenario.onFragment {
-            it.viewModel.postValue(Resource.loading())
+            it.viewModel.postValue(Resource.Loading())
         }
 
         Screen.onScreen<LoginScreen> {
