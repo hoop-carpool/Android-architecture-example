@@ -12,8 +12,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import mini.rx.flowable
-import mini.rx.select
 
 class LoginViewModel(
     private val loginRepository: LoginRepository,
@@ -31,12 +29,11 @@ class LoginViewModel(
 
     init {
         _viewData.postValue(Resource.Empty())
-
-        sessionStore.flowable()
-            .select { it.token }
-            .subscribe {
-                _viewData.postValue(Resource.Success(LoginViewData(it.accessToken)))
-            }.track()
+//        sessionStore.flowable()
+//            .select { it.token }
+//            .subscribe {
+//                _viewData.postValue(Resource.Success(LoginViewData(it.accessToken)))
+//            }.track()
     }
 
     fun doLogin(): Job {
