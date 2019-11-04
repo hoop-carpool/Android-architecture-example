@@ -13,14 +13,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class LoginViewModel(
+open class LoginViewModel(
     private val loginRepository: LoginRepository,
     private val sessionStore: SessionStore
 ) : BaseViewModel() {
 
     private val _viewData = MutableLiveData<Resource<LoginViewData>>()
-    val viewData: LiveData<Resource<LoginViewData>>
-        get() = _viewData
+
+    open fun getViewData(): LiveData<Resource<LoginViewData>> = _viewData
 
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     fun postValue(viewData: Resource<LoginViewData>) {
@@ -36,7 +36,7 @@ class LoginViewModel(
 //            }.track()
     }
 
-    fun doLogin(): Job {
+    open fun doLogin(): Job {
         _viewData.postValue(Resource.Loading())
         return CoroutineScope(Dispatchers.IO).launch {
             val oauth = loginRepository.doLogin()
