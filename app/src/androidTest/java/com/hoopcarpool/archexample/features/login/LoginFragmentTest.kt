@@ -1,6 +1,5 @@
 package com.hoopcarpool.archexample.features.login
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.MutableLiveData
@@ -20,7 +19,6 @@ import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import mini.onUi
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.kodein.di.generic.provider
@@ -33,9 +31,6 @@ private class LoginScreen : Screen<LoginScreen>() {
 @RunWith(AndroidJUnit4::class)
 internal class LoginFragmentTest {
 
-    @get:Rule
-    val rule = InstantTaskExecutorRule()
-
     private val mockNavController: NavController = mock()
     private val mutableLiveData = MutableLiveData<Resource<LoginViewModel.LoginViewData>>()
 
@@ -44,9 +39,9 @@ internal class LoginFragmentTest {
     private fun launchNewInstance() {
         injectTestDependencies {
             bindViewModel<LoginViewModel>() with provider {
-                val viewModel = mock<LoginViewModel>()
-                whenever(viewModel.getViewData()).thenReturn(mutableLiveData)
-                viewModel
+                mock<LoginViewModel>().apply {
+                    whenever(getViewData()).thenReturn(mutableLiveData)
+                }
             }
         }
         fragmentScenario = launchFragmentInContainer(null, R.style.AppTheme) { LoginFragment() }
