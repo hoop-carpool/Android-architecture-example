@@ -21,7 +21,7 @@ interface LoginApi {
         @Field("client_secret") clientSecret: String = "eY2YgbmIAyMobTPVZb9cjoceu9LJMwIKDI7LfZqvQ3ANiApH0E",
         @Field("grant_type") grantType: String = "client_credentials",
         @Field("scope") scope: String = "verse chapter"
-    ): Response<Auth>
+    ): Auth
 
     @JsonClass(generateAdapter = true)
     data class Auth(

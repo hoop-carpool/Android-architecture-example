@@ -1,6 +1,7 @@
 package com.hoopcarpool.archexample.features.login
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +32,20 @@ class LoginFragment : BaseFragment() {
             viewModel.doLogin()
         }
 
+        viewModel.doLogin()
+
+        Handler().postDelayed({
+            viewModel.doLogin()
+        }, 100)
+
+//        Handler().postDelayed({
+//            val intent = Intent(context, BlankActivity::class.java)
+//            startActivity(intent)
+//            activity?.finish()
+//        }, 1000)
+
         viewModel.getViewData().observe(this) {
+            it.logIt("LoginFragment")
             when (it) {
                 is Resource.Success -> {
                     binding.text.text = it.value.text

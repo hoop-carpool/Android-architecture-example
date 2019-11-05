@@ -1,44 +1,32 @@
 package com.hoopcarpool.archexample.features.login
 
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.hoopcarpool.archexample.core.base.BaseViewModel
-import com.hoopcarpool.archexample.core.flux.SessionStore
 import com.hoopcarpool.archexample.core.network.login.LoginApi
 import com.hoopcarpool.archexample.core.network.login.LoginRepository
 import com.hoopcarpool.archexample.core.utils.Resource
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
+import timber.log.Timber
+import kotlin.math.roundToInt
 
-open class LoginViewModel(
-    private val loginRepository: LoginRepository,
-    private val sessionStore: SessionStore
-) : BaseViewModel() {
+open class LoginViewModel(private val loginRepository: LoginRepository) : BaseViewModel() {
 
     private val _viewData = MutableLiveData<Resource<LoginViewData>>()
-
     open fun getViewData(): LiveData<Resource<LoginViewData>> = _viewData
-
-    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
-    fun postValue(viewData: Resource<LoginViewData>) {
-        _viewData.postValue(viewData)
-    }
 
     init {
         _viewData.postValue(Resource.Empty())
-//        sessionStore.flowable()
-//            .select { it.token }
-//            .subscribe {
-//                _viewData.postValue(Resource.Success(LoginViewData(it.accessToken)))
-//            }.track()
     }
 
     open fun doLogin(): Job {
+        viewModelScope.coroutineContext.cancelChildren()
         _viewData.postValue(Resource.Loading())
-        return CoroutineScope(Dispatchers.IO).launch {
+        return viewModelScope.launch {
             val oauth = loginRepository.doLogin()
             _viewData.postValue(LoginViewData.from(oauth))
         }

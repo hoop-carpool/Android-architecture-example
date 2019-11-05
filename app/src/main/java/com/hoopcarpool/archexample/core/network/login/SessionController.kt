@@ -1,9 +1,7 @@
-package com.hoopcarpool.archexample.core.flux
+package com.hoopcarpool.archexample.core.network.login
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import com.hoopcarpool.archexample.core.network.login.LoginApi
-import com.hoopcarpool.archexample.core.network.successOrThrow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -48,10 +46,15 @@ class SessionControllerImpl(
     override fun doAuth() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val auth = loginApi.oauthGetToken().successOrThrow()
+                val auth = loginApi.oauthGetToken()
                 dispatcher.dispatchAsync(RequestAuthCompletedAction(auth, Task.success()))
             } catch (exception: Exception) {
-                dispatcher.dispatchAsync(RequestAuthCompletedAction(null, Task.failure(exception)))
+                dispatcher.dispatchAsync(
+                    RequestAuthCompletedAction(
+                        null,
+                        Task.failure(exception)
+                    )
+                )
             }
         }
     }

@@ -11,6 +11,6 @@ import org.kodein.di.generic.provider
 object LoginModule {
 
     fun create() = Kodein.Module("loginFeature", true) {
-        bindViewModel<LoginViewModel>() with provider { LoginViewModel(instance(), instance()) }
+        bindViewModel<LoginViewModel>() with provider { LoginViewModel(instance()) }
     }
 }

@@ -1,13 +1,11 @@
 package com.hoopcarpool.archexample.core.network.login
 
-import com.hoopcarpool.archexample.core.flux.RequestAuthAction
-import com.hoopcarpool.archexample.core.flux.SessionStore
 import com.hoopcarpool.archexample.core.utils.Resource
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
+import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.CompletableDeferred
 import mini.Dispatcher
+import mini.Store
 import mini.rx.flowable
-import mini.rx.select
 
 interface LoginRepository {
 
@@ -20,24 +18,44 @@ class LoginRepositoryImpl(
 ) : LoginRepository {
 
     override suspend fun doLogin(): Resource<LoginApi.Auth> {
+        return try {
 
-        suspendCoroutine<Boolean> { continuation ->
-            sessionStore.flowable()
-                .select { it.tokenTask }
-                .takeUntil { it.isTerminal }
-                .subscribe {
-                    if (it.isTerminal)
-                        continuation.resume(true)
-                }
-            dispatcher.dispatchAsync(RequestAuthAction())
-        }
+            val token = waitForUntil(sessionStore,
+                trigger = { dispatcher.dispatchAsync(RequestAuthAction()) },
+                condition = { it.tokenTask.isTerminal },
+                select = { it.token }).await()
 
-        val token = sessionStore.state.token
-
-        return if (token != null) {
-            Resource.Success(token)
-        } else {
-            Resource.Failure(sessionStore.state.tokenTask.exceptionOrNull())
+            return if (token != null) {
+                Resource.Success(token)
+            } else {
+                Resource.Failure(sessionStore.state.tokenTask.exceptionOrNull())
+            }
+        } catch (e: Exception) {
+            Resource.Failure(e)
         }
     }
+}
+
+inline fun <T, U> waitForUntil(
+    store: Store<T>,
+    crossinline trigger: () -> Unit,
+    crossinline condition: (T) -> Boolean,
+    crossinline select: (T) -> U
+): CompletableDeferred<U> {
+
+    trigger()
+
+    var disposable: Disposable? = null
+    val deferred = CompletableDeferred<U>()
+    disposable = store.flowable()
+        .subscribe {
+            if (condition(it)) {
+                if (disposable?.isDisposed == false) {
+                    disposable?.dispose()
+                }
+                deferred.complete(select(store.state))
+            }
+        }
+
+    return deferred
 }

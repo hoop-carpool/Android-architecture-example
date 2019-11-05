@@ -1,6 +1,5 @@
-package com.hoopcarpool.archexample.core.flux
+package com.hoopcarpool.archexample.core.network.login
 
-import com.hoopcarpool.archexample.core.network.login.LoginApi
 import mini.BaseAction
 import mini.Reducer
 import mini.Store

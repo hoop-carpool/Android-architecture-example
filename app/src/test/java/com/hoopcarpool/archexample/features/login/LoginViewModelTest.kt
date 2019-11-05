@@ -1,8 +1,8 @@
 package com.hoopcarpool.archexample.features.login
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.hoopcarpool.archexample.core.flux.SessionController
-import com.hoopcarpool.archexample.core.flux.SessionStore
+import com.hoopcarpool.archexample.core.network.login.SessionController
+import com.hoopcarpool.archexample.core.network.login.SessionStore
 import com.hoopcarpool.archexample.core.network.login.LoginApi
 import com.hoopcarpool.archexample.core.network.login.LoginRepository
 import com.hoopcarpool.archexample.core.utils.Resource
@@ -42,7 +42,7 @@ internal class LoginViewModelTest {
 
         runBlocking {
             loginViewModel.doLogin()
-            verify(loginRepository, times(1)).doLogin()
+            verify(loginRepository, times(1)).doLogin(number)
         }
     }
 
@@ -52,7 +52,7 @@ internal class LoginViewModelTest {
         val loginViewModel = LoginViewModel(loginRepository, sessionStore)
 
         runBlocking {
-            verify(loginRepository, never()).doLogin()
+            verify(loginRepository, never()).doLogin(number)
         }
     }
 
@@ -70,7 +70,7 @@ internal class LoginViewModelTest {
         runBlocking {
             val loginViewModel = LoginViewModel(loginRepository, sessionStore)
             val auth = LoginApi.Auth("accessToken", "scope", "type")
-            whenever(loginRepository.doLogin()).doAnswer { Resource.Success(auth) }
+            whenever(loginRepository.doLogin(number)).doAnswer { Resource.Success(auth) }
 
             loginViewModel.doLogin().join()
             Assertions.assertTrue(loginViewModel.getViewData().value is Resource.Success)

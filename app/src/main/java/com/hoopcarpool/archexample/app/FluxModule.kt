@@ -1,8 +1,8 @@
 package com.hoopcarpool.archexample.app
 
-import com.hoopcarpool.archexample.core.flux.SessionController
-import com.hoopcarpool.archexample.core.flux.SessionControllerImpl
-import com.hoopcarpool.archexample.core.flux.SessionStore
+import com.hoopcarpool.archexample.core.network.login.SessionController
+import com.hoopcarpool.archexample.core.network.login.SessionControllerImpl
+import com.hoopcarpool.archexample.core.network.login.SessionStore
 import mini.kodein.bindStore
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
@@ -15,6 +15,12 @@ import org.kodein.di.generic.singleton
 object FluxModule {
     fun create() = Kodein.Module("flux", true) {
         bindStore { SessionStore(instance()) }
-        bind<SessionController>() with singleton { SessionControllerImpl(instance(), instance(), instance()) }
+        bind<SessionController>() with singleton {
+            SessionControllerImpl(
+                instance(),
+                instance(),
+                instance()
+            )
+        }
     }
 }
