@@ -12,17 +12,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import mini.rx.flowable
-import mini.rx.select
 
-class LoginViewModel(
+open class LoginViewModel(
     private val loginRepository: LoginRepository,
     private val sessionStore: SessionStore
 ) : BaseViewModel() {
 
     private val _viewData = MutableLiveData<Resource<LoginViewData>>()
-    val viewData: LiveData<Resource<LoginViewData>>
-        get() = _viewData
+
+    open fun getViewData(): LiveData<Resource<LoginViewData>> = _viewData
 
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     fun postValue(viewData: Resource<LoginViewData>) {
@@ -31,15 +29,14 @@ class LoginViewModel(
 
     init {
         _viewData.postValue(Resource.Empty())
-
-        sessionStore.flowable()
-            .select { it.token }
-            .subscribe {
-                _viewData.postValue(Resource.Success(LoginViewData(it.accessToken)))
-            }.track()
+//        sessionStore.flowable()
+//            .select { it.token }
+//            .subscribe {
+//                _viewData.postValue(Resource.Success(LoginViewData(it.accessToken)))
+//            }.track()
     }
 
-    fun doLogin(): Job {
+    open fun doLogin(): Job {
         _viewData.postValue(Resource.Loading())
         return CoroutineScope(Dispatchers.IO).launch {
             val oauth = loginRepository.doLogin()

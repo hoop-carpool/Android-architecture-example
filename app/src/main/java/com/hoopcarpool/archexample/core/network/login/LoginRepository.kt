@@ -1,9 +1,13 @@
 package com.hoopcarpool.archexample.core.network.login
 
-import com.hoopcarpool.archexample.core.flux.RequestAuthCompletedAction
-import com.hoopcarpool.archexample.core.network.successOrThrow
+import com.hoopcarpool.archexample.core.flux.RequestAuthAction
+import com.hoopcarpool.archexample.core.flux.SessionStore
 import com.hoopcarpool.archexample.core.utils.Resource
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 import mini.Dispatcher
+import mini.rx.flowable
+import mini.rx.select
 
 interface LoginRepository {
 
@@ -12,15 +16,28 @@ interface LoginRepository {
 
 class LoginRepositoryImpl(
     private val dispatcher: Dispatcher,
-    private val loginApi: LoginApi
+    private val sessionStore: SessionStore
 ) : LoginRepository {
 
-    override suspend fun doLogin(): Resource<LoginApi.Auth> =
-        try {
-            val auth = loginApi.oauthGetToken().successOrThrow()
-            dispatcher.dispatchAsync(RequestAuthCompletedAction(auth))
-            Resource.Success(auth)
-        } catch (exception: Exception) {
-            Resource.Failure<LoginApi.Auth>(exception)
-        }.also { it.logIt(javaClass.name) }
+    override suspend fun doLogin(): Resource<LoginApi.Auth> {
+
+        suspendCoroutine<Boolean> { continuation ->
+            sessionStore.flowable()
+                .select { it.tokenTask }
+                .takeUntil { it.isTerminal }
+                .subscribe {
+                    if (it.isTerminal)
+                        continuation.resume(true)
+                }
+            dispatcher.dispatchAsync(RequestAuthAction())
+        }
+
+        val token = sessionStore.state.token
+
+        return if (token != null) {
+            Resource.Success(token)
+        } else {
+            Resource.Failure(sessionStore.state.tokenTask.exceptionOrNull())
+        }
+    }
 }

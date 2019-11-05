@@ -31,7 +31,7 @@ class LoginFragment : BaseFragment() {
             viewModel.doLogin()
         }
 
-        viewModel.viewData.observe(this) {
+        viewModel.getViewData().observe(this) {
             when (it) {
                 is Resource.Success -> {
                     binding.text.text = it.value.text

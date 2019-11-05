@@ -62,7 +62,7 @@ class App : Application(), KodeinAware {
 
         with(kodein) {
             addImport(AppModule.create(), false)
-            addImport(LoginModule.create(), false)
+            addImport(LoginModule.create(), true)
             addImport(NetworkModule.create(), false)
             addImport(FluxModule.create(), false)
             addImport(ApiModule.create(), false)

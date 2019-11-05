@@ -32,7 +32,7 @@ internal class LoginViewModelTest {
 
         val loginViewModel = LoginViewModel(loginRepository, sessionStore)
 
-        Assertions.assertTrue(loginViewModel.viewData.value is Resource.Empty)
+        Assertions.assertTrue(loginViewModel.getViewData().value is Resource.Empty)
     }
 
     @Test
@@ -62,7 +62,7 @@ internal class LoginViewModelTest {
         val loginViewModel = LoginViewModel(loginRepository, sessionStore)
 
         loginViewModel.doLogin()
-        Assertions.assertTrue(loginViewModel.viewData.value is Resource.Loading)
+        Assertions.assertTrue(loginViewModel.getViewData().value is Resource.Loading)
     }
 
     @Test
@@ -73,8 +73,8 @@ internal class LoginViewModelTest {
             whenever(loginRepository.doLogin()).doAnswer { Resource.Success(auth) }
 
             loginViewModel.doLogin().join()
-            Assertions.assertTrue(loginViewModel.viewData.value is Resource.Success)
-            Assertions.assertTrue((loginViewModel.viewData.value as Resource.Success).value.text == auth.accessToken)
+            Assertions.assertTrue(loginViewModel.getViewData().value is Resource.Success)
+            Assertions.assertTrue((loginViewModel.getViewData().value as Resource.Success).value.text == auth.accessToken)
         }
     }
 }

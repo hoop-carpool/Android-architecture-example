@@ -3,15 +3,27 @@ package com.hoopcarpool.archexample.core.flux
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.hoopcarpool.archexample.core.network.login.LoginApi
+import com.hoopcarpool.archexample.core.network.successOrThrow
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import mini.Dispatcher
+import mini.Task
 
 interface SessionController {
     fun saveAuth(auth: LoginApi.Auth)
 
     fun retrieveAuth(): LoginApi.Auth?
+
+    fun doAuth()
 }
 
 @Suppress("PrivatePropertyName")
-class SessionControllerImpl(private val sharedPreferences: SharedPreferences) : SessionController {
+class SessionControllerImpl(
+    private val sharedPreferences: SharedPreferences,
+    private val loginApi: LoginApi,
+    private val dispatcher: Dispatcher
+) : SessionController {
 
     private val AUTH_ACCESS_TOKEN_KEY = "auth_access_token"
     private val AUTH_SCOPE_KEY = "auth_scope"
@@ -31,5 +43,16 @@ class SessionControllerImpl(private val sharedPreferences: SharedPreferences) : 
         val tokenType = sharedPreferences.getString(AUTH_TOKEN_TYPE_KEY, null) ?: return null
 
         return LoginApi.Auth(accessToken, scope, tokenType)
+    }
+
+    override fun doAuth() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val auth = loginApi.oauthGetToken().successOrThrow()
+                dispatcher.dispatchAsync(RequestAuthCompletedAction(auth, Task.success()))
+            } catch (exception: Exception) {
+                dispatcher.dispatchAsync(RequestAuthCompletedAction(null, Task.failure(exception)))
+            }
+        }
     }
 }
