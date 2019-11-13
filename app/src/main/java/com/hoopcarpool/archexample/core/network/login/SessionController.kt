@@ -2,18 +2,21 @@ package com.hoopcarpool.archexample.core.network.login
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import com.hoopcarpool.archexample.core.network.Task
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import mini.Dispatcher
-import mini.Task
+import retrofit2.HttpException
+import timber.log.Timber
 
 interface SessionController {
     fun saveAuth(auth: LoginApi.Auth)
 
     fun retrieveAuth(): LoginApi.Auth?
 
-    fun doAuth()
+    fun doAuth(): Job
 }
 
 @Suppress("PrivatePropertyName")
@@ -43,19 +46,20 @@ class SessionControllerImpl(
         return LoginApi.Auth(accessToken, scope, tokenType)
     }
 
-    override fun doAuth() {
+    override fun doAuth() =
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val auth = loginApi.oauthGetToken()
                 dispatcher.dispatchAsync(RequestAuthCompletedAction(auth, Task.success()))
-            } catch (exception: Exception) {
+            } catch (exception: HttpException) {
                 dispatcher.dispatchAsync(
                     RequestAuthCompletedAction(
                         null,
                         Task.failure(exception)
                     )
                 )
+            } catch (exception: Exception) {
+                Timber.e(exception)
             }
         }
-    }
 }

@@ -1,5 +1,8 @@
-package com.hoopcarpool.archexample.core.network.login
+package com.hoopcarpool.archexample.features.login
 
+import com.hoopcarpool.archexample.core.network.login.LoginApi
+import com.hoopcarpool.archexample.core.network.login.RequestAuthAction
+import com.hoopcarpool.archexample.core.network.login.SessionStore
 import com.hoopcarpool.archexample.core.utils.Resource
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.CompletableDeferred
@@ -7,15 +10,15 @@ import mini.Dispatcher
 import mini.Store
 import mini.rx.flowable
 
-interface LoginRepository {
+interface LoginUseCases {
 
     suspend fun doLogin(): Resource<LoginApi.Auth>
 }
 
-class LoginRepositoryImpl(
+class LoginUseCasesImpl(
     private val dispatcher: Dispatcher,
     private val sessionStore: SessionStore
-) : LoginRepository {
+) : LoginUseCases {
 
     override suspend fun doLogin(): Resource<LoginApi.Auth> {
         return try {

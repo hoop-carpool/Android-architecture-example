@@ -1,9 +1,11 @@
 package com.hoopcarpool.archexample.core.network.login
 
+import com.hoopcarpool.archexample.core.network.Resource
+import com.hoopcarpool.archexample.core.network.Task
+import kotlinx.coroutines.Job
 import mini.BaseAction
 import mini.Reducer
 import mini.Store
-import mini.Task
 
 data class RequestAuthCompletedAction(
     val auth: LoginApi.Auth?,
@@ -25,8 +27,8 @@ class SessionStore(private val sessionController: SessionController) : Store<Ses
 
     @Reducer
     fun requestAuth(action: RequestAuthAction) {
-        newState = state.copy(tokenTask = Task.loading())
-        sessionController.doAuth()
+        if (state.tokenTask.isLoading) (state.tokenTask.value as Resource.Loading<Job>).value!!.cancel()
+        newState = state.copy(tokenTask = Task.loading(sessionController.doAuth()))
     }
 
     @Reducer

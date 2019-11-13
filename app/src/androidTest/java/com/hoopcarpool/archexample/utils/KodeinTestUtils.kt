@@ -5,7 +5,7 @@ import mini.onUiSync
 import org.kodein.di.Kodein
 
 /**
- * It overrides a test viewmodel and recreates the Kodein graph.
+ * It overrides a [Kodein.Builder] and recreates the Kodein graph.
  */
 fun injectTestDependencies(init: Kodein.Builder.() -> Unit) {
     app.setTestModule(init)

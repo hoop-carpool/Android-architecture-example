@@ -36,7 +36,7 @@ class LoginFragment : BaseFragment() {
 
         Handler().postDelayed({
             viewModel.doLogin()
-        }, 100)
+        }, 150)
 
 //        Handler().postDelayed({
 //            val intent = Intent(context, BlankActivity::class.java)
