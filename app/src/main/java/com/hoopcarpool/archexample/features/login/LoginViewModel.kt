@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.hoopcarpool.archexample.core.base.BaseViewModel
 import com.hoopcarpool.archexample.core.network.login.LoginApi
+import com.hoopcarpool.archexample.core.network.login.LoginUseCases
 import com.hoopcarpool.archexample.core.utils.Resource
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelChildren
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
 open class LoginViewModel(private val loginUseCases: LoginUseCases) : BaseViewModel() {
 
     private val _viewData = MutableLiveData<Resource<LoginViewData>>()
+
     open fun getViewData(): LiveData<Resource<LoginViewData>> = _viewData
 
     init {
@@ -25,16 +27,6 @@ open class LoginViewModel(private val loginUseCases: LoginUseCases) : BaseViewMo
         return viewModelScope.launch {
             val oauth = loginUseCases.doLogin()
             _viewData.postValue(LoginViewData.from(oauth))
-        }
-    }
-
-    fun blabla(): Boolean {
-        viewModelScope.launch {
-            // lanzar accion
-
-            // se subscribe a la task/store -> se suspende aqui
-
-            // aqui tenemos ya la task success o failure
         }
     }
 

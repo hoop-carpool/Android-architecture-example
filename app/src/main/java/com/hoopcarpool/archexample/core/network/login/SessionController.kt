@@ -2,7 +2,7 @@ package com.hoopcarpool.archexample.core.network.login
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import com.hoopcarpool.archexample.core.network.Task
+import com.hoopcarpool.archexample.core.utils.Task
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -50,12 +50,12 @@ class SessionControllerImpl(
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val auth = loginApi.oauthGetToken()
-                dispatcher.dispatchAsync(RequestAuthCompletedAction(auth, Task.success()))
+                dispatcher.dispatchAsync(RequestAuthCompletedAction(auth, Task.Success))
             } catch (exception: HttpException) {
                 dispatcher.dispatchAsync(
                     RequestAuthCompletedAction(
                         null,
-                        Task.failure(exception)
+                        Task.Failure(exception)
                     )
                 )
             } catch (exception: Exception) {

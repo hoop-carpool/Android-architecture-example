@@ -15,12 +15,6 @@ import org.kodein.di.generic.singleton
 object FluxModule {
     fun create() = Kodein.Module("flux", true) {
         bindStore { SessionStore(instance()) }
-        bind<SessionController>() with singleton {
-            SessionControllerImpl(
-                instance(),
-                instance(),
-                instance()
-            )
-        }
+        bind<SessionController>() with singleton { SessionControllerImpl(instance(), instance(), instance()) }
     }
 }

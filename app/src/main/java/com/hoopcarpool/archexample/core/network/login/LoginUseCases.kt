@@ -1,8 +1,5 @@
-package com.hoopcarpool.archexample.features.login
+package com.hoopcarpool.archexample.core.network.login
 
-import com.hoopcarpool.archexample.core.network.login.LoginApi
-import com.hoopcarpool.archexample.core.network.login.RequestAuthAction
-import com.hoopcarpool.archexample.core.network.login.SessionStore
 import com.hoopcarpool.archexample.core.utils.Resource
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.CompletableDeferred
