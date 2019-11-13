@@ -47,7 +47,7 @@ inline fun <T, U> waitForUntil(
 
     var disposable: Disposable? = null
     val deferred = CompletableDeferred<U>()
-    disposable = store.flowable()
+    disposable = store.flowable(hotStart = false)
         .subscribe {
             if (condition(it)) {
                 if (disposable?.isDisposed == false) {

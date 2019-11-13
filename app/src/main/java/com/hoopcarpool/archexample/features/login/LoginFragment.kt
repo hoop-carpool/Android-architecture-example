@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.observe
 import com.hoopcarpool.archexample.core.base.BaseFragment
 import com.hoopcarpool.archexample.core.utils.Resource
 import com.hoopcarpool.archexample.databinding.LoginFragmentBinding
@@ -31,7 +30,8 @@ class LoginFragment : BaseFragment() {
             viewModel.doLogin()
         }
 
-        viewModel.getViewData().observe(this) {
+        viewModel.getViewData().observe {
+            it.logIt(this::class.java.name)
             when (it) {
                 is Resource.Success -> {
                     binding.text.text = it.value.text

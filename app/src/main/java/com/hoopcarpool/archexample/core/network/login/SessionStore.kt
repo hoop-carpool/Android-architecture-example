@@ -14,7 +14,7 @@ class RequestAuthAction : BaseAction()
 
 data class SessionState(
     val token: LoginApi.Auth? = null,
-    val tokenTask: Task = Task.Idle
+    val tokenTask: Task = Task.Idle()
 )
 
 class SessionStore(private val sessionController: SessionController) : Store<SessionState>() {
@@ -25,8 +25,7 @@ class SessionStore(private val sessionController: SessionController) : Store<Ses
 
     @Reducer
     fun requestAuth(action: RequestAuthAction) {
-        if (state.tokenTask.isLoading) (state.tokenTask as Task.Loading).job.cancel()
-
+        state.tokenTask.cancelJob()
         newState = state.copy(tokenTask = Task.Loading(sessionController.doAuth()))
     }
 

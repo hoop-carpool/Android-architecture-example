@@ -50,7 +50,7 @@ class SessionControllerImpl(
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val auth = loginApi.oauthGetToken()
-                dispatcher.dispatchAsync(RequestAuthCompletedAction(auth, Task.Success))
+                dispatcher.dispatchAsync(RequestAuthCompletedAction(auth, Task.Success()))
             } catch (exception: HttpException) {
                 dispatcher.dispatchAsync(
                     RequestAuthCompletedAction(
