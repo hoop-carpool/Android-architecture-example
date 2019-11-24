@@ -3,7 +3,7 @@ name: CI
 on: [push]
 
 jobs:
-  test:
+  unitTest:
     name: Run Unit Tests
     runs-on: ubuntu-18.04
 
@@ -20,6 +20,7 @@ jobs:
 
   apk:
     name: Generate APK
+    needs: [unitTest]
     runs-on: ubuntu-18.04
 
     steps:
@@ -79,4 +80,4 @@ jobs:
       - name: Run Instrumentation Tests in Firebase Test Lab
         uses: actions/gcloud/cli@master
         with:
-          args: firebase test android run --type instrumentation --app app-debug/app-debug.apk --test app-debug-androidTest/app-debug-androidTest.apk --device model=Pixel2,version=28,locale=pl,orientation=portrait
+          args: firebase test android run --type instrumentation --app app-debug/app-debug.apk --test app-debug-androidTest/app-debug-androidTest.apk --device model=Pixel2,version=28,locale=es,orientation=portrait
