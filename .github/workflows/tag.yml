@@ -1,0 +1,16 @@
+name: dailyRelease
+
+on:
+  schedule:
+    - cron:  '*/15 * * * *'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@master
+    - uses: toolmantim/release-drafter@v5.2.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
