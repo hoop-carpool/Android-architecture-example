@@ -9,9 +9,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@master
-    - name: Create tag
-      run: |
-          git config --global user.email "GitHub"
-          git config --global user.name "GitHub"
-          git tag v1.4
-          git push origin --tags
+    - name: Bump version and push tag
+      uses: anothrNick/github-tag-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        RELEASE_BRANCHES: task/*
