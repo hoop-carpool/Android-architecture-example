@@ -1,6 +1,8 @@
 
 name: Set Tag
-on: [push]
+on:
+  schedule:
+    - cron:  '*/15 * * * *'
 
 jobs:
   label:
@@ -15,5 +17,5 @@ jobs:
         git config --global user.email 'GitHubActions@users.noreply.github.com'
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
         ls -a
-        python tag.py bump-minor
+        python tag.py
         git push origin --tags
