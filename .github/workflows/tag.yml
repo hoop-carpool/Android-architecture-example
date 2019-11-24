@@ -1,0 +1,20 @@
+name: dailyRelease
+
+on: 
+  schedule:
+    - cron:  '*/5 * * * *'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@master
+    - name: Bump version and push tag
+      uses: anothrNick/github-tag-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        RELEASE_BRANCHES: master
+        DEFAULT_BUMP: patch
+        REPO_OWNER: hoop-carpool
