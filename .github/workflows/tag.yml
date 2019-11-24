@@ -12,6 +12,6 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Create tag
-        run: |
+      run: |
           git tag -a v1.4
           git push origin --tags
