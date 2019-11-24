@@ -2,7 +2,7 @@ name: dailyRelease
 
 on:
   schedule:
-    - cron:  '*/15 * * * *'
+    - cron:  '*/1 * * * *'
 
 jobs:
   build:
@@ -11,6 +11,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@master
-    - uses: toolmantim/release-drafter@v5.2.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Create tag
+        run: |
+          git tag -a v1.4
+          git push origin --tags
