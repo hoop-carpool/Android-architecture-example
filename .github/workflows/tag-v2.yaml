@@ -1,0 +1,19 @@
+
+name: Set Tag
+on: [push]
+
+jobs:
+  label:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@master
+    - name: create tag
+      run: |
+        git config --global user.name 'GitHubActions'
+        git config --global user.email 'GitHubActions@users.noreply.github.com'
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+        ls -a
+        python tag.py bump-minor
+        git push origin --tags
