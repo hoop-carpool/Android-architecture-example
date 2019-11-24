@@ -12,10 +12,7 @@ import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 import org.junit.jupiter.api.Assertions
 
 internal class LoginViewModelTest {
@@ -54,6 +51,7 @@ internal class LoginViewModelTest {
     }
 
     @Test
+    @Ignore
     fun do_login_call_controller_method() {
 
         val loginViewModel = LoginViewModel(loginUseCases)
