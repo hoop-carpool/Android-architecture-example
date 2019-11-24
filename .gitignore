@@ -203,10 +203,3 @@ gradle-app.setting
 .idea/sonarlint/
 
 \.idea/render\.experimental\.xml
-gradlew.bat
-
-gradlew
-
-gradle/wrapper/gradle-wrapper.jar
-
-gradle/wrapper/gradle-wrapper.properties
