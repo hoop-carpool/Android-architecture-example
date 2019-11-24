@@ -11,5 +11,7 @@ jobs:
     - uses: actions/checkout@master
     - name: Create tag
       run: |
-          git tag -a v1.4
+          git config --global user.email "GitHub"
+          git config --global user.name "GitHub"
+          git tag v1.4
           git push origin --tags
