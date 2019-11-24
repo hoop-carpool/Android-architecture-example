@@ -75,7 +75,7 @@ dependencies {
     implementation "com.firebase:firebase-jobdispatcher:0.8.5"
 
     /** Utils */
-    def moshi_version = "1.8.0"
+    def moshi_version = '1.9.2'
     implementation "com.squareup.moshi:moshi:$moshi_version"
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
     implementation "com.squareup.moshi:moshi-adapters:$moshi_version"
@@ -90,7 +90,7 @@ dependencies {
      * Testing
      */
     androidTestImplementation "androidx.test.ext:junit:1.1.1"
-    debugImplementation("androidx.fragment:fragment-testing:1.2.0-rc01") {
+    debugImplementation('androidx.fragment:fragment-testing:1.2.0-rc02') {
         // Exclude androidx.test:core while fragment_testing depends on 1.1.0
         exclude group: 'androidx.test', module: 'core'
     }
@@ -118,7 +118,7 @@ dependencies {
     androidTestImplementation "androidx.test.uiautomator:uiautomator:2.2.0"
 
     //Using jUnit5 in unit tests
-    def junit_jupiter_version = "5.4.0"
+    def junit_jupiter_version = '5.5.2'
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junit_jupiter_version"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit_jupiter_version"
 }
