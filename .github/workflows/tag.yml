@@ -1,7 +1,8 @@
 name: dailyRelease
 
-on: [push]
-
+on: 
+  schedule:
+    - cron:  '*/15 * * * *'
 jobs:
   build:
 
@@ -13,4 +14,5 @@ jobs:
       uses: anothrNick/github-tag-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        RELEASE_BRANCHES: task/*
+        RELEASE_BRANCHES: master
+        DEFAULT_BUMP: patch
