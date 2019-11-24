@@ -24,7 +24,7 @@ def versionTuple(v):
 	return version
 
 def versionTupleToString(v):
-	return "v{}.{}.{}".format(v[0], v[1], v[2])
+	return "{}.{}.{}".format(v[0], v[1], v[2])
 
 def scanCurrentBranchTagsAndGetBiggestVersion():
 	log_for_current_branch = os.popen('git log --decorate --pretty=oneline').read()
