@@ -1,21 +1,23 @@
 
 name: Daily snapshot
+
 on:
   schedule:
     - cron:  '0 22 * * *'
 
 jobs:
-  label:
-
+  createTag:
+    name: Generate a new tag and push it
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@master
-    - name: create tag
-      run: |
-        git config --global user.name 'GitHubActions'
-        git config --global user.email 'GitHubActions@users.noreply.github.com'
-        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-        ls -a
-        python tag.py
-        git push origin --tags
+      - uses: actions/checkout@master
+      - name: create tag
+        run: |
+          git config --global user.name 'GitHubActions'
+          git config --global user.email 'GitHubActions@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${{ secrets.REPO_SCOPED_TOKEN }}@github.com/${{ github.repository }}
+          python tag.py
+          git push origin --tags
+
+  
