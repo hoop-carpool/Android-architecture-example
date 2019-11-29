@@ -1,4 +1,4 @@
-name-template: '$NEXT_MINOR_VERSION 🌈'
+name-template: '$NEXT_MINOR_VERSION'
 tag-template: '$NEXT_MINOR_VERSION'
 categories:
   - title: '🚀 Features'
@@ -11,6 +11,6 @@ categories:
     label: 'task'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 template: |
-  ## Changes
+  ## Changes $NEXT_MINOR_VERSION
 
   $CHANGES
