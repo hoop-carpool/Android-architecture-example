@@ -8,7 +8,7 @@ on:
 jobs:
   unitTest:
     name: Run Unit Tests
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v1
@@ -24,7 +24,7 @@ jobs:
   apk:
     name: Generate APK
     needs: [unitTest]
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v1
@@ -55,7 +55,7 @@ jobs:
   firebase:
     name: Run UI tests with Firebase Test Lab
     needs: apk
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v1
