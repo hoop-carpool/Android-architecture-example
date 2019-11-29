@@ -11,6 +11,6 @@ categories:
     label: 'task'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 template: |
-  ## Changes $NEXT_MINOR_VERSION
+  ## Changes
 
   $CHANGES
