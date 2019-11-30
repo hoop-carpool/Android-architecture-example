@@ -11,11 +11,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v1.0.0
       - name: create tag
         run: |
           git config --global user.name 'GitHubActions'
           git config --global user.email 'GitHubActions@users.noreply.github.com'
           git remote set-url origin https://x-access-token:${{ secrets.REPO_SCOPED_TOKEN }}@github.com/${{ github.repository }}
-          python tag.py
+          python ./ci/tag.py
           git push origin --tags  

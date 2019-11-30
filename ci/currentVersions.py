@@ -1,4 +1,6 @@
-import os, sys, re
+import os
+import sys
+import re
 
 VERSION_REGEX = r'[0-9]+\.[0-9]+\.[0-9]+'
 
@@ -12,7 +14,7 @@ def isValidTag(tag):
 	if regex.match(tag):
 		return True
 
-	print "WARNING: Ignoring invalid tag: " + tag
+	print ("WARNING: Ignoring invalid tag: " + tag)
 	return False
 
 def versionTuple(v):
@@ -53,29 +55,11 @@ def getBiggestVersionTagForCurrentBranch():
 		raise ValueError('Cannot read any tag from current branch.')
 
 	if current_version != biggest_version_for_branch:
-		print "WARNING: The latest tag ({}) is not the biggest version in branch ({}). Using biggest version.".format(last_tag, versionTupleToString(biggest_version_for_branch))
+		print ("WARNING: The latest tag ({}) is not the biggest version in branch ({}). Using biggest version.".format(last_tag, versionTupleToString(biggest_version_for_branch)))
 
 	return biggest_version_for_branch
 
-def createNewTagOnCurrentHeadIfNotTagged(current_tag, new_tag):
-	tag_in_head = os.popen("git tag --contains HEAD").read().replace("\n", "")
-	if tag_in_head != "":
-		print 'No new tag. HEAD already tagged as {}'.format(tag_in_head)
-	else:
-		print "Creating new tag: {} (previous tag for branch: {})".format(new_tag, current_tag)
-		os.popen("git tag {} HEAD".format(new_tag))
+current_tag = versionTupleToString(getBiggestVersionTagForCurrentBranch())
 
-def composeCandidateTagFromArguments():
-	tag = None
-	if len(sys.argv) > 1 and sys.argv[1] == "bump-minor":
-		tag = (current_tag[0], current_tag[1] + 1, 0)
-	elif len(sys.argv) > 1 and sys.argv[1] == "bump-major":
-		tag = (current_tag[0] + 1, 0, 0)
-	else:
-		tag = (current_tag[0], current_tag[1], current_tag[2] + 1)
-	return tag
-
-#run!
-current_tag = getBiggestVersionTagForCurrentBranch()
-new_version_tag = composeCandidateTagFromArguments()
-createNewTagOnCurrentHeadIfNotTagged(versionTupleToString(current_tag), versionTupleToString(new_version_tag))
+def currentTag():
+	return versionTupleToString(getBiggestVersionTagForCurrentBranch())
