@@ -87,9 +87,9 @@ jobs:
 
   uploadartifact:
     needs: firebase
-    name: Upload download-artifact
+    name: Upload aritfacts to release
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v1
 
