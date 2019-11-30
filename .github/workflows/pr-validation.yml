@@ -1,9 +1,7 @@
-name: CI
+name: PR checks
 
 on:
-  push:
-    branches:
-      - feature/*
+  pull_request:
 
 jobs:
   unitTest:
