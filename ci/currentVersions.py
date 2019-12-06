@@ -59,7 +59,18 @@ def getBiggestVersionTagForCurrentBranch():
 
 	return biggest_version_for_branch
 
-current_tag = versionTupleToString(getBiggestVersionTagForCurrentBranch())
-
 def currentTag():
 	return versionTupleToString(getBiggestVersionTagForCurrentBranch())
+
+def previousPatchTag():
+	current_tag = getBiggestVersionTagForCurrentBranch()
+	previous_patch = max(current_tag[2] - 1, 0)
+
+	return versionTupleToString((current_tag[0], current_tag[1], previous_patch))
+
+
+
+
+
+
+
