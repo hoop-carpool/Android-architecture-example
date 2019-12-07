@@ -4,6 +4,10 @@ on:
   pull_request:
 
 jobs:
+
+  prconfig:
+    name: Configure PR
+    
   unitTest:
     name: Run Unit Tests
     runs-on: ubuntu-latest
