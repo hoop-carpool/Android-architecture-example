@@ -4,6 +4,16 @@ on:
   pull_request:
 
 jobs:
+
+  prconfig:
+    name: Configure PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+        
   unitTest:
     name: Run Unit Tests
     runs-on: ubuntu-latest
