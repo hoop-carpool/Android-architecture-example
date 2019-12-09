@@ -52,10 +52,19 @@ jobs:
     - name: Run Instrumentation Tests in Firebase Test Lab
       uses: actions/gcloud/cli@master
       with:
+        args: firebase test android models list
+        
+    - name: Run Instrumentation Tests in Firebase Test Lab
+      uses: actions/gcloud/cli@master
+      with:
         args: firebase test android run --type instrumentation --app app/build/outputs/apk/debug/app-debug.apk --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk --device model=Pixel2,version=28,locale=es,orientation=portrait
 
     - name: Assemble app release APK
-      run: bash ./gradlew assembleRelease -Pandroid.injected.signing.store.file=key.jks -Pandroid.injected.signing.store.password=123456 -Pandroid.injected.signing.key.alias=alias -Pandroid.injected.signing.key.password=123456
+      env:
+        STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      run: bash ./gradlew assembleRelease -Pandroid.injected.signing.store.file=key.jks -Pandroid.injected.signing.store.password=${STORE_PASSWORD} -Pandroid.injected.signing.key.alias=${KEY_ALIAS} -Pandroid.injected.signing.key.password=${KEY_PASSWORD}
 
     - name: Create Release
       id: create_release
