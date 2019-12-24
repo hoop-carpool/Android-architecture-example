@@ -1,9 +1,10 @@
 package com.hoopcarpool.archexample.core.utils
 
+import java.util.concurrent.CancellationException
 import kotlinx.coroutines.Job
 
 @Suppress("LeakingThis")
-sealed class Task {
+sealed class JobTask {
 
     fun exceptionOrNull(): Throwable? =
         when (this) {
@@ -20,15 +21,14 @@ sealed class Task {
     val isLoading: Boolean
         get() = this is Loading
 
-    fun cancelJob() {
-        if (this is Loading)
-            job.cancel()
+    fun cancelJob(msg: String? = null) {
+        if (this is Loading && job.isActive) job.cancel(CancellationException(msg))
     }
 
-    class Success : Task()
-    class Idle : Task()
-    class Loading(val job: Job) : Task()
-    class Failure(val exception: Throwable? = null) : Task()
+    class Success : JobTask()
+    class Idle : JobTask()
+    class Loading(val job: Job) : JobTask()
+    class Failure(val exception: Throwable? = null) : JobTask()
 
     override fun toString(): String {
         return when (this) {

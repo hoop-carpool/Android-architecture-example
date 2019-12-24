@@ -11,7 +11,7 @@ import retrofit2.http.POST
  *
  * Link: https://bhagavadgita.io/apidocs/#/auth/post_auth_oauth_token
  */
-interface LoginApi {
+interface AuthApi {
 
     @FormUrlEncoded
     @POST("/auth/oauth/token")

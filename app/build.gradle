@@ -44,11 +44,12 @@ ktlint {
     android.set(true)
 }
 
+apply plugin: 'kotlin-allopen'
+
+allOpen {
+    // allows mocking for classes w/o directly opening them for release builds
+    annotation 'com.hoopcarpool.archexample.OpenForTesting'
+}
+
 ktlintCheck.dependsOn "ktlintFormat"
 preBuild.dependsOn "ktlintCheck"
-
-dependencies {
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-}

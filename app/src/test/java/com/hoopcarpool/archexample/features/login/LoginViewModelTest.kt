@@ -1,8 +1,7 @@
 package com.hoopcarpool.archexample.features.login
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.hoopcarpool.archexample.core.network.login.LoginApi
-import com.hoopcarpool.archexample.core.network.login.LoginUseCases
+import com.hoopcarpool.archexample.core.network.login.AuthApi
 import com.hoopcarpool.archexample.core.utils.Resource
 import com.nhaarman.mockitokotlin2.*
 import java.util.concurrent.Executors
@@ -12,7 +11,10 @@ import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
-import org.junit.*
+import org.junit.After
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 import org.junit.jupiter.api.Assertions
 
 internal class LoginViewModelTest {
@@ -51,14 +53,13 @@ internal class LoginViewModelTest {
     }
 
     @Test
-    @Ignore
     fun do_login_call_controller_method() {
 
         val loginViewModel = LoginViewModel(loginUseCases)
 
         runBlocking {
-            loginViewModel.doLogin()
-            verify(loginUseCases, times(1)).doLogin()
+            loginViewModel.doLogin().join()
+            verify(loginUseCases, times(1)).doLogin(any())
         }
     }
 
@@ -68,7 +69,7 @@ internal class LoginViewModelTest {
         val loginViewModel = LoginViewModel(loginUseCases)
 
         runBlocking {
-            verify(loginUseCases, never()).doLogin()
+            verify(loginUseCases, never()).doLogin(any())
         }
     }
 
@@ -85,8 +86,8 @@ internal class LoginViewModelTest {
     fun login_call_return_success() {
         runBlocking {
             val loginViewModel = LoginViewModel(loginUseCases)
-            val auth = LoginApi.Auth("accessToken", "scope", "type")
-            whenever(loginUseCases.doLogin()).doAnswer { Resource.Success(auth) }
+            val auth = AuthApi.Auth("accessToken", "scope", "type")
+            whenever(loginUseCases.doLogin(any())).doAnswer { Resource.Success(auth) }
 
             loginViewModel.doLogin().join()
             Assertions.assertTrue(loginViewModel.getViewData().value is Resource.Success)

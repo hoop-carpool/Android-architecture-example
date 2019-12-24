@@ -1,20 +1,20 @@
 package com.hoopcarpool.archexample.core.network.login
 
-import com.hoopcarpool.archexample.core.utils.Task
+import com.hoopcarpool.archexample.core.utils.JobTask
 import mini.BaseAction
 import mini.Reducer
 import mini.Store
 
 data class RequestAuthCompletedAction(
-    val auth: LoginApi.Auth?,
-    val task: Task
+    val auth: AuthApi.Auth?,
+    val jobTask: JobTask
 ) : BaseAction()
 
 class RequestAuthAction : BaseAction()
 
 data class SessionState(
-    val token: LoginApi.Auth? = null,
-    val tokenTask: Task = Task.Idle()
+    val token: AuthApi.Auth? = null,
+    val tokenJobTask: JobTask = JobTask.Idle()
 )
 
 class SessionStore(private val sessionController: SessionController) : Store<SessionState>() {
@@ -25,14 +25,14 @@ class SessionStore(private val sessionController: SessionController) : Store<Ses
 
     @Reducer
     fun requestAuth(action: RequestAuthAction) {
-        state.tokenTask.cancelJob()
-        newState = state.copy(tokenTask = Task.Loading(sessionController.doAuth()))
+        state.tokenJobTask.cancelJob("Retry auth")
+        newState = state.copy(tokenJobTask = JobTask.Loading(sessionController.doAuth()))
     }
 
     @Reducer
     fun requestAuthCompleted(action: RequestAuthCompletedAction) {
         if (action.auth != null) sessionController.saveAuth(action.auth)
 
-        newState = state.copy(token = action.auth, tokenTask = action.task)
+        newState = state.copy(token = action.auth, tokenJobTask = action.jobTask)
     }
 }

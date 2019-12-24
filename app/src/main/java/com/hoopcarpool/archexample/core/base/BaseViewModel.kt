@@ -1,5 +1,6 @@
 package com.hoopcarpool.archexample.core.base
 
+import com.hoopcarpool.archexample.OpenForTesting
 import mini.rx.android.viewmodels.RxViewModel
 
-open class BaseViewModel : RxViewModel()
+@OpenForTesting class BaseViewModel : RxViewModel()
