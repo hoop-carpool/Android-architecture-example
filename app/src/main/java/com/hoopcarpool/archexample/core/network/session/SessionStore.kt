@@ -1,4 +1,4 @@
-package com.hoopcarpool.archexample.core.network.login
+package com.hoopcarpool.archexample.core.network.session
 
 import com.hoopcarpool.archexample.core.utils.JobTask
 import mini.BaseAction

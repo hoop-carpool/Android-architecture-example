@@ -1,6 +1,6 @@
 package com.hoopcarpool.archexample.core.network
 
-import com.hoopcarpool.archexample.core.network.login.AuthApi
+import com.hoopcarpool.archexample.core.network.session.AuthApi
 import com.hoopcarpool.archexample.features.login.LoginUseCases
 import com.hoopcarpool.archexample.features.login.LoginUseCasesImpl
 import org.kodein.di.Kodein

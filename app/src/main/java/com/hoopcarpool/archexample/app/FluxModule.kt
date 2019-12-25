@@ -1,8 +1,8 @@
 package com.hoopcarpool.archexample.app
 
-import com.hoopcarpool.archexample.core.network.login.SessionController
-import com.hoopcarpool.archexample.core.network.login.SessionControllerImpl
-import com.hoopcarpool.archexample.core.network.login.SessionStore
+import com.hoopcarpool.archexample.core.network.session.SessionController
+import com.hoopcarpool.archexample.core.network.session.SessionControllerImpl
+import com.hoopcarpool.archexample.core.network.session.SessionStore
 import mini.kodein.bindStore
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind

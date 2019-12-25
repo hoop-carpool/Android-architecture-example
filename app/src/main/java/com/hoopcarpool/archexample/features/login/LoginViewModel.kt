@@ -4,9 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.hoopcarpool.archexample.core.base.BaseViewModel
-import com.hoopcarpool.archexample.core.network.login.AuthApi
+import com.hoopcarpool.archexample.core.network.session.AuthApi
 import com.hoopcarpool.archexample.core.utils.Resource
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class LoginViewModel(private val loginUseCases: LoginUseCases) : BaseViewModel() {
@@ -19,9 +18,9 @@ class LoginViewModel(private val loginUseCases: LoginUseCases) : BaseViewModel()
         _viewData.postValue(Resource.Empty())
     }
 
-    fun doLogin(): Job {
+    fun doLogin() {
         _viewData.postValue(Resource.Loading())
-        return viewModelScope.launch {
+        viewModelScope.launch {
             val oauth = loginUseCases.doLogin(this@LoginViewModel)
             _viewData.postValue(LoginViewData.from(oauth))
         }

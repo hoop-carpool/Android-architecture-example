@@ -1,9 +1,12 @@
-package com.hoopcarpool.archexample.core.network.login
+package com.hoopcarpool.archexample.core.network.session
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.hoopcarpool.archexample.core.utils.JobTask
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import mini.Dispatcher
 import retrofit2.HttpException
 

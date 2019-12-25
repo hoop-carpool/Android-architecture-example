@@ -13,8 +13,6 @@ inline fun <T, U> SubscriptionTracker.waitForUntil(
     crossinline select: (T) -> U
 ): CompletableDeferred<U> {
 
-    trigger()
-
     val deferred = CompletableDeferred<U>()
 
     var disposable: Disposable? = null
@@ -26,6 +24,8 @@ inline fun <T, U> SubscriptionTracker.waitForUntil(
                 deferred.complete(select(store.state))
             }
         }.track()
+
+    trigger()
 
     return deferred
 }
