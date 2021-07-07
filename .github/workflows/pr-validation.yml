@@ -4,9 +4,19 @@ on:
   pull_request:
 
 jobs:
+
+  prconfig:
+    name: Configure PR
+    runs-on: self-hosted
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+        
   unitTest:
     name: Run Unit Tests
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
     - uses: actions/checkout@v1.2.0
@@ -22,7 +32,7 @@ jobs:
   apk:
     name: Generate APK
     needs: [unitTest]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - uses: actions/checkout@v1.2.0
@@ -53,7 +63,7 @@ jobs:
   firebase:
     name: Run UI tests with Firebase Test Lab
     needs: apk
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - uses: actions/checkout@v1.2.0
